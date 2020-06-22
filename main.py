@@ -50,7 +50,6 @@ if __name__ == '__main__':
     args = vars(parser.parse_args())
 
     dataset = CarpoolDataset(args['test_file'])
-    data_len = len(dataset)
     mgr = cd.CarpoolDataManager(args['dist_file'], args['coords_file'])
 
     times = []
