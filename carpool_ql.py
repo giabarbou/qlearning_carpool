@@ -47,18 +47,22 @@ class QLearning:
                 else:
                     idx = np.argmax(self.Q[state, valid_actions])
                     action = valid_actions[idx]
-
+                
+                # take action and observe reward and next state
                 new_state, reward, done, valid_actions = self.env.step(action)
 
+                # update Q values according to sampled reward
                 self.Q[state, action] = self.Q[state, action] + \
                                         self.lr * (reward + self.gamma * np.max(self.Q[new_state, valid_actions]) -
                                             self.Q[state, action])
+                
                 state = new_state
                 rewards_current_episode += reward
 
                 if done:
                     break
 
+            # decrease epsilon according to decay rate
             self.eps = self.eps_min + (eps_max - self.eps_min) * \
                        np.exp(-self.eps_decay * i_ep)
             self.rewards_all_episodes.append(rewards_current_episode)
@@ -74,6 +78,8 @@ class QLearning:
         return self.Q
 
     def select_route(self):
+        # select optimal route according to learnt Q values
+        
         state, valid_actions = self.env.reset()
         rewards = 0.0
         for t in count():
