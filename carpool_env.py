@@ -20,7 +20,7 @@ class CarpoolEnv:
 
         self.start = start
         self.goal = goal
-        self.d_thr = self.dist[self.start][self.goal] + delay
+        self.d_thr = self.dist[self.start][self.goal] + delay  # set distance threshold
         self.capacity = capacity
 
         self.state = self.start
@@ -59,6 +59,8 @@ class CarpoolEnv:
 
         reward = 0.0
 
+        # does selecting the point lead to surpassing the distance threshold
+        # or not?
         if self.dist_covered + self.dist[self.state][self.action] + \
                 self.dist[self.action][self.goal] <= self.d_thr:
 
@@ -70,6 +72,7 @@ class CarpoolEnv:
         else:
             self.done = True
 
+        # check if car is full or there are no more actions to take
         if self.passengers >= self.capacity or not self.valid_actions:
             self.done = True
 
